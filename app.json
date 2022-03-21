@@ -20,14 +20,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.tranlephu1207.todoapp"
+      "bundleIdentifier": "com.tranlephu1207.todoapp",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use FaceID"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.tranlephu1207.todoapp"
+      "package": "com.tranlephu1207.todoapp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
