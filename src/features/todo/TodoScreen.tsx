@@ -1,14 +1,14 @@
 import { Dimensions, FlatList, ImageBackground, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { RootStackScreenProps, ScreenNames } from '@routers';
-import { createTodo, updateTodo } from './actions';
+import { changeTodoContent, createTodo, updateTodo } from './actions';
+import { selectSelectedTodo, selectTodoContent, selectTodoEditMode, selectTodos } from './selectors';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Icon from '@expo/vector-icons/Feather';
 import { Images } from '@constants';
 import { Todo } from './types';
 import { TodoView } from '@components';
-import { selectTodos } from './selectors';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 const { width: windowWidth } = Dimensions.get('window');
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingRight: 10,
     paddingBottom: 5,
+    width: windowWidth,
   },
   textInput: {
     flex: 1,
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
 
 type TodoScreenProps = RootStackScreenProps<ScreenNames.Todo>;
 
-type EditMode = 'add' | 'edit';
 
 const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
 
@@ -55,9 +55,9 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
   const headerHeight = useHeaderHeight();
 
   const todos = useSelector(selectTodos);
-  const [content, setContent] = useState<string>('');
-  const [mode, setMode] = useState<EditMode>('add');
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const content = useSelector(selectTodoContent);
+  const mode = useSelector(selectTodoEditMode);
+  const selectedTodo = useSelector(selectSelectedTodo);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -65,15 +65,17 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
       headerStyle: {
         backgroundColor: 'transparent',
       },
+      headerTitle: 'Today\'s Todos',
       headerTitleStyle: {
         color: 'white',
+        fontWeight: 'bold'
       }
     });
   });
 
-  const onChangeContent = (content: string) => {
-    setContent(content);
-  };
+  const onChangeContent = useCallback((text: string) => {
+    dispatch(changeTodoContent(text));
+  }, []);
 
   const onCreateTodo = useCallback(() => {
     if (content !== '') {
@@ -91,18 +93,12 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
     }
   }, [selectedTodo, content]);
 
-  const onPressTodo = useCallback((todo: Todo) => {
-    setMode('edit');
-    setContent(todo.title);
-    setSelectedTodo(todo);
-  }, []);
-
   const renderTodo = (todo: Todo) => {
-    return <TodoView todo={todo} onPress={onPressTodo}/>;
+    return <TodoView todo={todo} />;
   };
 
   const renderHeader = (
-    <View style={[styles.textInputContainer]}>
+    <View style={styles.textInputContainer}>
       <TextInput
         style={styles.textInput}
         multiline
@@ -119,10 +115,6 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-
-  useEffect(() => {
-
-  }, []);
 
   return (
     <ImageBackground source={Images.background} style={styles.container}>

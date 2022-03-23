@@ -1,8 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { deleteTodos, setTodoMode, tickTodo } from '@features/todo/actions';
+import { selectDeletingTodoRecord, selectTodoEditMode } from '@features/todo/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Icon from '@expo/vector-icons/Feather';
 import React from 'react';
-import { Todo } from '@features';
+import { Todo } from '@features/todo/types.d';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +34,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     flexWrap: 'wrap',
-    flex: 1,
   },
   titleButton: {
     flex: 1,
@@ -38,19 +42,38 @@ const styles = StyleSheet.create({
 
 interface TodoViewProps {
   todo: Todo;
-  onPress: (todo: Todo) => void;
 }
 
-const TodoView: React.FC<TodoViewProps> = ({ todo, onPress }) => {
+const TodoView: React.FC<TodoViewProps> = ({ todo }) => {
+
+  const dispatch = useDispatch();
+  const records = useSelector(selectDeletingTodoRecord);
+  const mode = useSelector(selectTodoEditMode);
+
+  const isTicked = useMemo(() => !!records[todo.id], [records]);
+
+  const onTickTodo = useCallback(() => {
+    dispatch(tickTodo(todo));
+  }, []);
+
+  const onPressTodo = useCallback(() => {
+    dispatch(setTodoMode(mode === 'add' ? 'edit' : 'add', todo));
+  }, [mode]);
+
+  const onPressDelete = useCallback(() => {
+    dispatch(deleteTodos([todo]));
+  }, []);
+
   return (
     <View style={styles.container} key={todo.id}>
       <Icon
-        name='square'
+        name={isTicked ? 'check-square' : 'square'}
         size={30}
         color="#900"
         style={styles.leftIcon}
+        onPress={onTickTodo}
       />
-      <TouchableOpacity style={styles.titleButton} onPress={() => onPress(todo)}>
+      <TouchableOpacity style={styles.titleButton} onPress={onPressTodo}>
         <Text style={styles.title}>{todo.title}</Text>
       </TouchableOpacity>
       <Icon
@@ -58,6 +81,7 @@ const TodoView: React.FC<TodoViewProps> = ({ todo, onPress }) => {
         size={30}
         color="#900"
         style={styles.rightIcon}
+        onPress={onPressDelete}
       />
     </View>
   );

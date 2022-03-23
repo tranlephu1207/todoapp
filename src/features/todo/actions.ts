@@ -1,6 +1,7 @@
+import { EditMode, TodoID } from './types.d';
+
 import ActionTypes from './actionTypes';
 import { AppError } from './../../types/AppError.d';
-import { EditMode } from './types.d';
 import { Todo } from './types';
 import { action } from 'typesafe-actions';
 
@@ -32,6 +33,22 @@ export const changeTodoContent = (content: string) => {
   return action(ActionTypes.CHANGE_TODO_CONTENT, { content });
 };
 
-export const setTodoMode = (mode: EditMode) => {
-  return action(ActionTypes.SET_TODO_MODE, { mode });
+export const setTodoMode = (mode: EditMode, todo?: Todo) => {
+  return action(ActionTypes.SET_TODO_MODE, { mode, todo });
+};
+
+export const deleteTodos = (todos: [Todo]) => {
+  return action(ActionTypes.DELETE_TODOS, { todos });
+};
+
+export const deleteTodosSuccess = (todoRecord: Record<TodoID, Todo>) => {
+  return action(ActionTypes.DELETE_TODOS_SUCCESS, { todoRecord });
+};
+
+export const deleteTodosError = (error: AppError) => {
+  return action(ActionTypes.DELETE_TODOS_ERROR, { error });
+};
+
+export const tickTodo = (todo: Todo) => {
+  return action(ActionTypes.TICK_TODO, { todo });
 };

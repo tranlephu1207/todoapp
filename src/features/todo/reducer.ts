@@ -1,6 +1,7 @@
-import { TodoActions, TodoState } from './types';
+import { Todo, TodoActions, TodoID, TodoState } from './types';
 
 import ActionTypes from './actionTypes';
+import _ from 'lodash';
 import update from 'immutability-helper';
 
 export const initialState: TodoState = {
@@ -9,6 +10,8 @@ export const initialState: TodoState = {
   error: undefined,
   mode: 'add',
   content: '',
+  selectedTodo: undefined,
+  deletingTodos: {},
 };
 
 export default function todoReducer(
@@ -35,7 +38,9 @@ export default function todoReducer(
             $merge: todoRecord
           } ?? todoRecord)
         ),
-        isLoading: false
+        isLoading: false,
+        mode: 'add',
+        content: '',
       };
     }
     case ActionTypes.UPDATE_TODO_ERROR:
@@ -55,10 +60,56 @@ export default function todoReducer(
       };
     }
     case ActionTypes.SET_TODO_MODE: {
-      const { mode } = action.payload;
+      const { mode, todo } = action.payload;
       return {
         ...state,
-        mode
+        mode,
+        selectedTodo: todo,
+        content: mode === 'add' ? state.content : (todo?.title ?? state.content)
+      };
+    }
+    case ActionTypes.TICK_TODO: {
+      const { todo } = action.payload;
+      const record: Record<TodoID, Todo> = { [todo.id]: todo };
+      return {
+        ...state,
+        deletingTodos: (state.deletingTodos ?
+          update(state.deletingTodos, 
+            state.deletingTodos[todo.id] ? 
+              { $unset: [todo.id] }
+              :
+              { $merge: record })
+          : record)
+      };
+    }
+    case ActionTypes.DELETE_TODOS: {
+      return {
+        ...state,
+        error: undefined,
+      };
+    }
+    case ActionTypes.DELETE_TODOS_SUCCESS: {
+      const { todoRecord } = action.payload;
+      const keys = Object.keys(todoRecord);
+      return {
+        ...state,
+        todos: (state.todos ?
+          update(state.todos, {
+            $unset: keys
+          })
+          : state.todos),
+        deletingTodos: (state.deletingTodos ?
+          update(state.deletingTodos, {
+            $unset: keys
+          })
+          : state.deletingTodos)
+      };
+    }
+    case ActionTypes.DELETE_TODOS_ERROR: {
+      const { error } = action.payload;
+      return {
+        ...state,
+        error,
       };
     }
     default:

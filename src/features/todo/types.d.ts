@@ -18,7 +18,10 @@ export interface TodoState {
   error?: AppError;
 
   mode: EditMode;
+  selectedTodo?: Todo;
   content: string;
+
+  deletingTodos: Record<TodoID, Todo>;
 }
 
 export type TodoActions = ActionType<typeof actions>;

@@ -11,7 +11,6 @@ const MainRouter = () => {
       <Stack.Screen
         name={ScreenNames.Todo}
         component={TodoScreen}
-        // options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
