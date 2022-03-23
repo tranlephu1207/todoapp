@@ -7,6 +7,8 @@ export const initialState: TodoState = {
   todos: {},
   isLoading: false,
   error: undefined,
+  mode: 'add',
+  content: '',
 };
 
 export default function todoReducer(
@@ -14,6 +16,7 @@ export default function todoReducer(
   action: TodoActions
 ): TodoState {
   switch (action.type) {
+    case ActionTypes.UPDATE_TODO:
     case ActionTypes.CREATE_TODO: {
       return {
         ...state,
@@ -21,6 +24,7 @@ export default function todoReducer(
         error: undefined
       };
     }
+    case ActionTypes.UPDATE_TODO_SUCCESS:
     case ActionTypes.CREATE_TODO_SUCCESS: {
       const { todo } = action.payload;
       const todoRecord = { [todo.id]: todo };
@@ -34,12 +38,27 @@ export default function todoReducer(
         isLoading: false
       };
     }
+    case ActionTypes.UPDATE_TODO_ERROR:
     case ActionTypes.CREATE_TODO_ERROR: {
       const { error } = action.payload;
       return {
         ...state,
         isLoading: false,
         error
+      };
+    }
+    case ActionTypes.CHANGE_TODO_CONTENT: {
+      const { content } = action.payload;
+      return {
+        ...state,
+        content,
+      };
+    }
+    case ActionTypes.SET_TODO_MODE: {
+      const { mode } = action.payload;
+      return {
+        ...state,
+        mode
       };
     }
     default:

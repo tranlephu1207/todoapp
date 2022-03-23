@@ -25,6 +25,20 @@ function* createTodo({ payload }: ReturnType<typeof actions.createTodo>) {
   }
 }
 
+function* updateTodo({ payload }: ReturnType<typeof actions.updateTodo>) {
+  try {
+    const { todo } = payload;
+    yield put(actions.updateTodoSuccess(todo));
+  } catch (error) {
+    yield call(
+      handleSagaError,
+      error,
+      actions.updateTodoError
+    );
+  }
+}
+
 export default function* todoSaga() {
   yield takeLatest(ActionTypes.CREATE_TODO, createTodo);
+  yield takeLatest(ActionTypes.UPDATE_TODO, updateTodo);
 }

@@ -4,6 +4,8 @@ import { AppError } from '@types';
 
 export type TodoID = string;
 
+export type EditMode = 'add' | 'edit';
+
 export interface Todo {
   id: TodoID;
   title: string;
@@ -14,6 +16,9 @@ export interface TodoState {
   todos: Record<TodoID, Todo>;
   isLoading: boolean;
   error?: AppError;
+
+  mode: EditMode;
+  content: string;
 }
 
 export type TodoActions = ActionType<typeof actions>;
