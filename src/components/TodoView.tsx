@@ -1,13 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { deleteTodos, setTodoMode, tickTodo } from '@features/todo/actions';
-import { selectDeletingTodoRecord, selectTodoEditMode } from '@features/todo/selectors';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Icon from '@expo/vector-icons/Feather';
 import React from 'react';
 import { Todo } from '@features/todo/types.d';
 import { useCallback } from 'react';
-import { useMemo } from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,8 +24,6 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 10,
-    borderColor: '#F0F0F0',
-    borderBottomWidth: 1,
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
@@ -42,27 +36,31 @@ const styles = StyleSheet.create({
 
 interface TodoViewProps {
   todo: Todo;
+  onTick:  (todo: Todo) => void;
+  onDelete: (todo: Todo) => void;
+  onPress: (todo: Todo) => void;
+  isTicked: boolean;
 }
 
-const TodoView: React.FC<TodoViewProps> = ({ todo }) => {
-
-  const dispatch = useDispatch();
-  const records = useSelector(selectDeletingTodoRecord);
-  const mode = useSelector(selectTodoEditMode);
-
-  const isTicked = useMemo(() => !!records[todo.id], [records]);
+const TodoView: React.FC<TodoViewProps> = ({
+  todo,
+  onPress,
+  onDelete,
+  onTick,
+  isTicked = false
+}) => {
 
   const onTickTodo = useCallback(() => {
-    dispatch(tickTodo(todo));
-  }, []);
+    onTick?.(todo);
+  }, [onTick, todo]);
 
   const onPressTodo = useCallback(() => {
-    dispatch(setTodoMode(mode === 'add' ? 'edit' : 'add', todo));
-  }, [mode]);
+    onPress?.(todo);
+  }, [onPress, todo]);
 
   const onPressDelete = useCallback(() => {
-    dispatch(deleteTodos([todo]));
-  }, []);
+    onDelete?.(todo);
+  }, [onDelete, todo]);
 
   return (
     <View style={styles.container} key={todo.id}>

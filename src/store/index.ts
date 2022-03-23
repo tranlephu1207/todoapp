@@ -7,21 +7,23 @@ import persistStore from 'redux-persist/es/persistStore';
 import rootReducer from './reducer';
 import rootSaga from './saga';
 
-declare namespace window {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
 }
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  blacklist: ['authentication']
 };
 
 const persistedReducer = persistCombineReducers(persistConfig, rootReducer);
 
 const sagaMiddleware = createSagaMdiddleware();
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?.({}) || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   persistedReducer,

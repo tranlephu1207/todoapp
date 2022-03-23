@@ -2,12 +2,16 @@ import { AuthenticationActions, AuthenticationState } from './types';
 
 import ActionTypes from './actionTypes';
 
-export const initialState: AuthenticationState = {
+export const authenticationInitialState: AuthenticationState = {
   error: undefined,
+  authenticated: false,
+  biometricTypes: [],
+  hasSavedBiometrics: false,
+  isBiometricSupported: false,
 };
 
 export default function authenticationReducer(
-  state: AuthenticationState = initialState,
+  state: AuthenticationState = authenticationInitialState,
   action: AuthenticationActions
 ): AuthenticationState {
   switch (action.type) {
@@ -15,13 +19,23 @@ export default function authenticationReducer(
       return state;
     }
     case ActionTypes.AUTHENTICATE_SUCCESS: {
-      return state;
+      const { authenticated } = action.payload;
+      return {
+        ...state,
+        authenticated,
+      };
     }
     case ActionTypes.AUTHENTICATE_ERROR: {
       const { error } = action.payload;
       return {
         ...state,
         error
+      };
+    }
+    case ActionTypes.RESET_AUTHENTICATION: {
+      return {
+        ...state,
+        authenticated: false,
       };
     }
     default:

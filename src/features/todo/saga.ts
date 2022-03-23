@@ -16,6 +16,8 @@ function* createTodo({ payload }: ReturnType<typeof actions.createTodo>) {
       createdAt: Date.now()
     };
     yield put(actions.createTodoSuccess(todo));
+    /* Reset to add mode whenever delete, add, update todo */
+    yield put(actions.setTodoMode('add'));
   } catch (error) {
     yield call(
       handleSagaError,
@@ -29,6 +31,8 @@ function* updateTodo({ payload }: ReturnType<typeof actions.updateTodo>) {
   try {
     const { todo } = payload;
     yield put(actions.updateTodoSuccess(todo));
+    /* Reset to add mode whenever delete, add, update todo */
+    yield put(actions.setTodoMode('add'));
   } catch (error) {
     yield call(
       handleSagaError,
@@ -43,6 +47,8 @@ function* deleteTodos({ payload }: ReturnType<typeof actions.deleteTodos>) {
     const { todos } = payload;
     const record = arrayToMap<Todo>('id', todos);
     yield put(actions.deleteTodosSuccess(record));
+    /* Reset to add mode whenever delete, add, update todo */
+    yield put(actions.setTodoMode('add'));
   } catch (error) {
     yield call(
       handleSagaError,

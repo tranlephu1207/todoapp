@@ -1,5 +1,4 @@
-import { authenticationReducer } from '@services';
-import { todoReducer } from '@features';
+import { authenticationReducer, todoReducer } from '@features';
 
 const rootReducer = {
   authentication: authenticationReducer,

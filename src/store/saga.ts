@@ -1,6 +1,6 @@
-import { authenticationSaga } from '@services';
+import { authenticationSaga, todoSaga } from '@features';
+
 import { fork } from 'redux-saga/effects';
-import { todoSaga } from '@features';
 
 export default function* rootSaga() {
   yield fork(authenticationSaga);

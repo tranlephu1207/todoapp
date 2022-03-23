@@ -1,9 +1,9 @@
 import { ApplicationRootState } from '@types';
 import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import { todoInitialState } from './reducer';
 
 const todoSelector = (state: ApplicationRootState) => {
-  return state.todo ?? initialState;
+  return state.todo ?? todoInitialState;
 };
 
 export const selectTodos = createSelector(

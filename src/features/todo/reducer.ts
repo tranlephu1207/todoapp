@@ -1,10 +1,9 @@
 import { Todo, TodoActions, TodoID, TodoState } from './types';
 
 import ActionTypes from './actionTypes';
-import _ from 'lodash';
 import update from 'immutability-helper';
 
-export const initialState: TodoState = {
+export const todoInitialState: TodoState = {
   todos: {},
   isLoading: false,
   error: undefined,
@@ -15,7 +14,7 @@ export const initialState: TodoState = {
 };
 
 export default function todoReducer(
-  state: TodoState = initialState,
+  state: TodoState = todoInitialState,
   action: TodoActions
 ): TodoState {
   switch (action.type) {
@@ -39,8 +38,6 @@ export default function todoReducer(
           } ?? todoRecord)
         ),
         isLoading: false,
-        mode: 'add',
-        content: '',
       };
     }
     case ActionTypes.UPDATE_TODO_ERROR:
@@ -64,8 +61,8 @@ export default function todoReducer(
       return {
         ...state,
         mode,
-        selectedTodo: todo,
-        content: mode === 'add' ? state.content : (todo?.title ?? state.content)
+        selectedTodo: mode === 'add' ? undefined : todo,
+        content: mode === 'add' ? '' : (todo?.title ?? state.content)
       };
     }
     case ActionTypes.TICK_TODO: {

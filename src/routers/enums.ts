@@ -1,4 +1,5 @@
 enum ScreenNames {
+  Authentication = 'Authentication',
   Todo = 'Todo'
 }
 

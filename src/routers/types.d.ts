@@ -8,6 +8,7 @@ declare global {
 }
 
 export type RootStackParamList = {
+  [ScreenNames.Authentication]: undefined;
   [ScreenNames.Todo]: undefined;
 }
 

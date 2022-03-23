@@ -1,5 +1,4 @@
-import { TodoState } from '@features';
-import { AuthenticationState } from '@services';
+import { TodoState, AuthenticationState } from '@features';
 
 interface ApplicationRootState {
   authentication: AuthenticationState;

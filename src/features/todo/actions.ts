@@ -37,7 +37,7 @@ export const setTodoMode = (mode: EditMode, todo?: Todo) => {
   return action(ActionTypes.SET_TODO_MODE, { mode, todo });
 };
 
-export const deleteTodos = (todos: [Todo]) => {
+export const deleteTodos = (todos: Todo[]) => {
   return action(ActionTypes.DELETE_TODOS, { todos });
 };
 
