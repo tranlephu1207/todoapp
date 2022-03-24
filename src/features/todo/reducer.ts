@@ -1,6 +1,8 @@
 import { Todo, TodoActions, TodoID, TodoState } from './types';
 
 import ActionTypes from './actionTypes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import persistReducer from 'redux-persist/es/persistReducer';
 import update from 'immutability-helper';
 
 export const todoInitialState: TodoState = {
@@ -13,7 +15,7 @@ export const todoInitialState: TodoState = {
   deletingTodos: {},
 };
 
-export default function todoReducer(
+function todoReducer(
   state: TodoState = todoInitialState,
   action: TodoActions
 ): TodoState {
@@ -113,3 +115,11 @@ export default function todoReducer(
       return state;
   }
 }
+
+const todoPersistConfig = {
+  key: 'todo',
+  storage: AsyncStorage,
+  whitelist: ['todos']
+};
+
+export default persistReducer(todoPersistConfig, todoReducer);

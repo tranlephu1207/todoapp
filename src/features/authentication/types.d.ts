@@ -8,12 +8,12 @@ export type BiometricType = AuthenticationType;
 export interface AuthenticationState {
   error?: AppError;
 
-  isBiometricSupported: boolean;
-  biometricTypes: BiometricType[];
+  isBiometricSupported?: boolean;
+  biometricTypes?: BiometricType[];
 
-  hasSavedBiometrics: boolean;
+  hasSavedBiometrics?: boolean;
 
-  authenticated?: boolean;
+  authenticated: boolean;
 }
 
 export type AuthenticationActions = ActionType<typeof actions>;

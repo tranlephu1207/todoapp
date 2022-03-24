@@ -1,31 +1,24 @@
 import { AuthenticationScreen, TodoScreen, resetAuthentication, selectAuthenticated } from '@features';
-import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppState } from 'react-native';
 import { RootStackParamList } from './types';
 import ScreenNames from './enums';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAppState } from '@hooks';
+import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainRouter = () => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectAuthenticated);
-
-  const handleResetAuthentication = useCallback((newState) => {
-    if (newState === 'inactive' || newState === 'background') {
-      dispatch(resetAuthentication());
-    }
-  }, [dispatch]);
+  const appState = useAppState();
 
   useEffect(() => {
-    AppState.addEventListener('change', handleResetAuthentication);
-
-    return () => {
-      AppState.removeEventListener('change', handleResetAuthentication);
-    };
-  }, [handleResetAuthentication]);
+    if (appState === 'inactive' || appState === 'background') {
+      dispatch(resetAuthentication());
+    }
+  }, [appState, dispatch]);
   
   return (
     <Stack.Navigator>

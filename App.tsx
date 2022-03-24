@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import useCachedResources from './hooks/useCachedResources';
+import useCachedResources from '@hooks/useCachedResources';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

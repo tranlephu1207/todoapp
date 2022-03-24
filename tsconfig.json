@@ -73,6 +73,18 @@
       ],
       "@constants/*": [
         "src/constants/*"
+      ],
+      "@hooks": [
+        "src/hooks"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@assets": [
+        "./assets"
+      ],
+      "@assets/*": [
+        "./assets/*"
       ]
     }
   },

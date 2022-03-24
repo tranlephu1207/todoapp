@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Icon from '@expo/vector-icons/Feather';
 import React from 'react';
+import { Text } from '@components';
 import { Todo } from '@features/todo/types.d';
 import { useCallback } from 'react';
 

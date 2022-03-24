@@ -15,3 +15,12 @@ export const selectAuthenticationError = createSelector(
   authenticationSelector,
   (state) => state.error
 );
+
+export const selectAuthenticationData = createSelector(
+  authenticationSelector,
+  (state) => ({
+    biometricTypes: state.biometricTypes,
+    hasSavedBiometrics: state.hasSavedBiometrics,
+    isBiometricSupported: state.isBiometricSupported,
+  })
+);

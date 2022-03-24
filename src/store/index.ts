@@ -16,7 +16,7 @@ declare global {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['authentication']
+  blacklist: ['authentication', 'todo']
 };
 
 const persistedReducer = persistCombineReducers(persistConfig, rootReducer);
