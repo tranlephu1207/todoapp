@@ -66,6 +66,7 @@ const TodoView: React.FC<TodoViewProps> = ({
   return (
     <View style={styles.container} key={todo.id}>
       <Icon
+        testID='leftIcon'
         name={isTicked ? 'check-square' : 'square'}
         size={30}
         color="#900"
@@ -76,6 +77,7 @@ const TodoView: React.FC<TodoViewProps> = ({
         <Text style={styles.title}>{todo.title}</Text>
       </TouchableOpacity>
       <Icon
+        testID='rightIcon'
         name='trash-2'
         size={30}
         color="#900"

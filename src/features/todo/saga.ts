@@ -1,28 +1,23 @@
 import * as actions from './actions';
 
 import { EditMode, Todo } from './types.d';
-import { arrayToMap, handleSagaError } from '@utils';
+import { arrayToMap, generateTodo, handleSagaError } from '@utils';
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import ActionTypes from './actionTypes';
 import { selectTodoEditMode } from './selectors';
-import { v4 as uuidv4 } from 'uuid';
 
-function* resetEditMode() {
+export function* resetEditMode() {
   const mode: EditMode = yield select(selectTodoEditMode);
   if (mode === 'edit') {
     yield put(actions.setTodoMode('add'));
   }
 }
 
-function* createTodo({ payload }: ReturnType<typeof actions.createTodo>) {
+export function* createTodo({ payload }: ReturnType<typeof actions.createTodo>) {
   try {
     const { content } = payload;
-    const todo: Todo = {
-      id: uuidv4(),
-      title: content,
-      createdAt: Date.now()
-    };
+    const todo: Todo = generateTodo(content);
     yield put(actions.createTodoSuccess(todo));
     /* Reset to add mode whenever delete, add, update todo */
     yield put(actions.setTodoMode('add'));
@@ -35,7 +30,7 @@ function* createTodo({ payload }: ReturnType<typeof actions.createTodo>) {
   }
 }
 
-function* updateTodo({ payload }: ReturnType<typeof actions.updateTodo>) {
+export function* updateTodo({ payload }: ReturnType<typeof actions.updateTodo>) {
   try {
     const { todo } = payload;
     yield put(actions.updateTodoSuccess(todo));
@@ -50,7 +45,7 @@ function* updateTodo({ payload }: ReturnType<typeof actions.updateTodo>) {
   }
 }
 
-function* deleteTodos({ payload }: ReturnType<typeof actions.deleteTodos>) {
+export function* deleteTodos({ payload }: ReturnType<typeof actions.deleteTodos>) {
   try {
     const { todos } = payload;
     const record = arrayToMap<Todo>('id', todos);

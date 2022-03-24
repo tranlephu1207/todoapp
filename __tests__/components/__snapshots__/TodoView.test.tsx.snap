@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoView should render correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "borderBottomWidth": 1.5,
+      "borderColor": "#FFFFFF",
+      "flexDirection": "row",
+      "minHeight": 40,
+      "paddingVertical": 10,
+      "width": "100%",
+    }
+  }
+>
+  <Text />
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flex": 1,
+        "opacity": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "bold",
+            "paddingHorizontal": 10,
+          },
+          false,
+        ]
+      }
+    >
+      test
+    </Text>
+  </View>
+  <Text />
+</View>
+`;

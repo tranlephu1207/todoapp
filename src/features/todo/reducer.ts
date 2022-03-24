@@ -2,7 +2,7 @@ import { Todo, TodoActions, TodoID, TodoState } from './types';
 
 import ActionTypes from './actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import persistReducer from 'redux-persist/es/persistReducer';
+import { persistReducer } from 'redux-persist';
 import update from 'immutability-helper';
 
 export const todoInitialState: TodoState = {
@@ -21,7 +21,8 @@ function todoReducer(
 ): TodoState {
   switch (action.type) {
     case ActionTypes.UPDATE_TODO:
-    case ActionTypes.CREATE_TODO: {
+    case ActionTypes.CREATE_TODO:
+    case ActionTypes.DELETE_TODOS: {
       return {
         ...state,
         isLoading: true,
@@ -43,7 +44,8 @@ function todoReducer(
       };
     }
     case ActionTypes.UPDATE_TODO_ERROR:
-    case ActionTypes.CREATE_TODO_ERROR: {
+    case ActionTypes.CREATE_TODO_ERROR:
+    case ActionTypes.DELETE_TODOS_ERROR: {
       const { error } = action.payload;
       return {
         ...state,
@@ -63,6 +65,13 @@ function todoReducer(
       return {
         ...state,
         mode,
+        /**
+         * Always assign selectedTodo to undefined
+         * and content to empty string
+         * when mode set to add, otherwise todo is
+         * required in order to set mode to edit.
+         * Content will be todo's title.
+         */
         selectedTodo: mode === 'add' ? undefined : todo,
         content: mode === 'add' ? '' : (todo?.title ?? state.content)
       };
@@ -72,6 +81,12 @@ function todoReducer(
       const record: Record<TodoID, Todo> = { [todo.id]: todo };
       return {
         ...state,
+        /**
+         * Merge todo's record to current deletingTodos if
+         * todo's id is not found in deletingTodos's keys.
+         * Vice versa, remove record which has key is todo's id
+         * from deletingTodos.
+         */
         deletingTodos: (state.deletingTodos ?
           update(state.deletingTodos, 
             state.deletingTodos[todo.id] ? 
@@ -81,34 +96,26 @@ function todoReducer(
           : record)
       };
     }
-    case ActionTypes.DELETE_TODOS: {
-      return {
-        ...state,
-        error: undefined,
-      };
-    }
     case ActionTypes.DELETE_TODOS_SUCCESS: {
       const { todoRecord } = action.payload;
       const keys = Object.keys(todoRecord);
       return {
         ...state,
         todos: (state.todos ?
-          update(state.todos, {
+          update(state.todos ?? {}, {
             $unset: keys
           })
-          : state.todos),
+          : {}),
+        /**
+         * Remember to remove from deletingTodos
+         * all todos that have id found in keys
+         * to untick/uncheck the corresponding TodoViews
+         */
         deletingTodos: (state.deletingTodos ?
           update(state.deletingTodos, {
             $unset: keys
           })
-          : state.deletingTodos)
-      };
-    }
-    case ActionTypes.DELETE_TODOS_ERROR: {
-      const { error } = action.payload;
-      return {
-        ...state,
-        error,
+          : {})
       };
     }
     default:

@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoInput should render correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "borderBottomColor": "rgb(222, 222, 222)",
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+      "paddingBottom": 5,
+      "paddingHorizontal": 16,
+      "width": 750,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    blurOnSubmit={true}
+    multiline={true}
+    onChangeText={[Function]}
+    placeholder="Do it now!"
+    placeholderTextColor="white"
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "color": "white",
+        "flex": 1,
+        "flexShrink": 1,
+        "fontSize": 22,
+        "fontWeight": "bold",
+        "maxHeight": 375,
+      }
+    }
+    underlineColorAndroid="transparent"
+    value="test"
+  />
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginLeft": 15,
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+</View>
+`;
+
+exports[`TodoInput should render correctly with Shallow 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "borderBottomColor": "rgb(222, 222, 222)",
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+      "paddingBottom": 5,
+      "paddingHorizontal": 16,
+      "width": 750,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    blurOnSubmit={true}
+    multiline={true}
+    onChangeText={[Function]}
+    placeholder="Do it now!"
+    placeholderTextColor="white"
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "color": "white",
+        "flex": 1,
+        "flexShrink": 1,
+        "fontSize": 22,
+        "fontWeight": "bold",
+        "maxHeight": 375,
+      }
+    }
+    underlineColorAndroid="transparent"
+    value="test"
+  />
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginLeft": 15,
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+</View>
+`;

@@ -74,6 +74,10 @@ const AuthenticationScreen: React.FC<AuthenticationScreenProps> = () => {
     dispatch(authenticate());
   }, [dispatch]);
 
+  /**
+   * Handle open device's security settings
+   * to setup biometric lock
+   */
   const onHandleOpenSettings = () => {
     if (Platform.OS === 'ios') {
       Linking.openURL('App-Prefs:PASSCODE');
@@ -83,6 +87,10 @@ const AuthenticationScreen: React.FC<AuthenticationScreenProps> = () => {
   };
 
   React.useEffect(() => {
+    /**
+     * Listen to appState to reload
+     * Authentication whenever app is re-active
+     */
     if (appState === 'active') {
       if (!isBiometricSupported) {
         onCheckBiometricSupported();
@@ -94,23 +102,33 @@ const AuthenticationScreen: React.FC<AuthenticationScreenProps> = () => {
     }
   }, [appState, biometricTypes, hasSavedBiometrics, isBiometricSupported, onCheckBiometricSupported, onCheckSavedBiometrics, onGetBiometricTypes]);
 
+  const renderButtons = (
+    /**
+     * Check if device has biometric enrolled,
+     * show authenticate button if yes,
+     * otherwise show button to navigate users to
+     * device's security settings menu
+     */
+    <View>
+      {hasSavedBiometrics
+        ?  
+        <Button title="Authenticate" onPress={onAuthenticate} />
+        :  
+        <View style={styles.bottomContainer}>
+          <Text style={styles.prompTxt}>{'You don\'t have any biometric enrolled on your device'}</Text>
+          <Button title="Go to Settings" onPress={onHandleOpenSettings} />
+        </View>
+      }
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Image source={Images.icon} style={styles.icon}/>
         <Text style={styles.title}>{'Todo App'}</Text>
       </View>
-      <View>
-        {hasSavedBiometrics
-          ?  
-          <Button title="Authenticate" onPress={onAuthenticate} />
-          :  
-          <View style={styles.bottomContainer}>
-            <Text style={styles.prompTxt}>{'You don\'t have any biometric enrolled on your device'}</Text>
-            <Button title="Go to Settings" onPress={onHandleOpenSettings} />
-          </View>
-        }
-      </View>
+      {renderButtons}
     </View>
   );
 };

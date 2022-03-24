@@ -43,6 +43,9 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
   const mode = useSelector(selectTodoEditMode);
   const selectedTodo = useSelector(selectSelectedTodo);
 
+  /**
+   * Listen to onChangeText of TodoInput's TextInput
+   */
   const onChangeContent = useCallback((text: string) => {
     dispatch(changeTodoContent(text));
   }, [dispatch]);
@@ -54,6 +57,10 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
   }, [content, dispatch]);
 
   const onUpdateTodo = useCallback(() => {
+    /**
+     * Execute only when one todo is selected
+     * and value of content is not empty
+     */
     if (selectedTodo && content !== '') {
       const updatedTodo: Todo = {
         ...selectedTodo,
@@ -64,6 +71,10 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
   }, [selectedTodo, content, dispatch]);
 
   const onPressTodo = useCallback((todo: Todo) => {
+    /**
+     * Change Edit mode whenever user taps on
+     * content of TodoView
+     */
     dispatch(setTodoMode(mode === 'add' ? 'edit' : 'add', todo));
   }, [dispatch, mode]);
 
@@ -71,6 +82,10 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
     dispatch(tickTodo(todo));
   }, [dispatch]);
 
+  /**
+   * Helper function to assign to per TodoView's onDelete
+   * and delete button on Navigation Bar
+   */
   const onDeleteTodos = useCallback((todos: Todo[]) => {
     dispatch(deleteTodos(todos));
   }, [dispatch]);
@@ -90,6 +105,10 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }) => {
         fontWeight: 'bold',
         fontSize: 22,
       },
+      /*
+       * Show delete button on navigation bar when one
+       * or multiple todo(s) ticked
+       */
       headerRight: () => selectedTodos.length > 0 && (
         <Icon
           name='trash-2'
